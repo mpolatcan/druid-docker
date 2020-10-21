@@ -10,13 +10,15 @@ config_loader_sh_template: |
   mkdir -p ${{DRUID_CONF_DIR}}/{{_common,broker,coordinator,historical,middleManager,overlord,router}}
 
   # Load JVM configurations of each Druid service
-  DRUID_SERVICES=(broker coordinator historical middleManager overlord)
+  DRUID_SERVICES=(broker coordinator historical middleManager overlord router)
   for DRUID_SERVICE in ${{DRUID_SERVICES[@]}}; do
       ENV_VAR_PREFIX=$(echo $DRUID_SERVICE | tr '[a-z]' '[A-Z]')
 
       ENV_VAR_JVM_HEAP_SIZE="${{ENV_VAR_PREFIX}}_JVM_HEAP_SIZE"
       ENV_VAR_JVM_MAX_HEAP_SIZE="${{ENV_VAR_PREFIX}}_JVM_MAX_HEAP_SIZE"
       ENV_VAR_JVM_MAX_DIRECT_MEMORY_SIZE="${{ENV_VAR_PREFIX}}_JVM_MAX_DIRECT_MEMORY_SIZE"
+
+      echo "org.apache.druid.cli.Main server ${{DRUID_SERVICE}}" >> ${{DRUID_CONF_DIR}}/$DRUID_SERVICE/main.config
 
   cat <<EOF > ${{DRUID_CONF_DIR}}/$DRUID_SERVICE/jvm.config
   -server

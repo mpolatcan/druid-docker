@@ -46,5 +46,6 @@ services:
     environment:
       DRUID_SERVICES: |
         router
+      HADOOP_CONF_DIR: "blabla"
     ports:
     - 8888:8888
