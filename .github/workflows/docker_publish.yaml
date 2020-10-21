@@ -3,7 +3,7 @@ name: druid-docker
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build-base-image:
