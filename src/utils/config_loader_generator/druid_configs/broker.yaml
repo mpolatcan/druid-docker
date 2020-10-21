@@ -1,0 +1,90 @@
+druid:
+  host: "NULL"
+  bindOnHost: "false"
+  plaintextPort: "8082"
+  tlsPort: "8282"
+  service: "druid/broker"
+  broker:
+    balancery.type: "random"
+    select.tier:
+      "": "highestPriority"
+      custom.priorities: "NULL"
+    http:
+      numConnections: "20"
+      compressionCodec: "gzip"
+      readTimeout: "PT15M"
+      unusedConnectionTimeout: "PT4M"
+      maxQueuedBytes: "0"
+      numMaxThreads: "NULL"
+    retryPolicy.numTries: "1"
+    cache:
+      useCache: "false"
+      populateCache: "false"
+      useResultLevelCache: "false"
+      populateResultLevelCache: "false"
+      resultLevelCacheLimit: "NULL"
+      unCacheable: "NULL"
+      cacheBulkMergeLimit: "NULL"
+      maxEntrySize: "NULL"
+  query.scheduler:
+    numThreads: "NULL"
+    laning:
+      strategy: "NULL"
+      maxLowPercent: "NULL"
+      isLimitPercent: "false"
+    prioritization:
+      stategy: "manual"
+      periodThreshold: "NULL"
+      durationThreshold: "NULL"
+      segmentCountThreshold: "NULL"
+      adjustment: "NULL"
+  server.http:
+    numThreads: "NULL"
+    queueSize: "NULL"
+    maxIdleTime: "PT5M"
+    enableRequestLimit: "false"
+    defaultQueryTimeout: "300000"
+    maxScatterGatherBytes: "NULL"
+    maxSubqueryRows: "100000"
+    gracefulShutdownTimeout: "PT0S"
+    unannouncePropagationDelay: "PT0S"
+    maxQueryTimeout: "NULL"
+    maxRequestHeaderSize: "NULL"
+  processing:
+    buffer:
+      sizeBytes: "NULL"
+      poolCacheMaxCount: "NULL"
+    formatString: "processing-%s"
+    numMergeBuffers: "NULL"
+    numThreads: "NULL"
+    columnCache.sizeBytes: "0"
+    fifo: "false"
+    tmpDir: "NULL"
+    merge:
+      useParallelMergePool: "true"
+      pool:
+        parallelism: "NULL"
+        defaultMaxQueryParallelism: "NULL"
+        awaitShutdownMillis: "NULL"
+      task:
+        targetRunTimeMillis: "100"
+        initialYieldNumRows: "16384"
+        smallBatchNumRows: "4096"
+  sql:
+    enable: "true"
+    avatica:
+      enable: "true"
+      maxConnections: "25"
+      maxRowsPerFrame: "NULL"
+      maxStatementsPerConnection: "4"
+      connectionIdleTimeout: "PT5M"
+    http.enable: "true"
+    planner:
+      maxTopNLimit: "100000"
+      metadataRefreshPeriod: "PT1M"
+      useApproximateCountDistinct: "true"
+      useApproximateTopN: "true"
+      requireTimeCondition: "false"
+      sqlTimeZone: "UTC"
+      metadataSegmentCacheEnable: "false"
+      metadataSegmentPollPeriod: "60000"

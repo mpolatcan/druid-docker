@@ -1,0 +1,44 @@
+druid:
+  host: "NULL"
+  bindOnHost: "false"
+  plaintextPort: "8081"
+  tlsPort: "8281"
+  service: "druid/coordinator"
+  coordinator:
+    period:
+      "": "PT60S"
+      indexingPeriod: "PT1800S"
+    startDelay: "PT300S"
+    load.timeout: "PT15M"
+    kill:
+      pendingSegments.on: "true"
+      "on": "false"
+      period: "P1D"
+      durationToRetain: "PT-1S"
+      maxSegments: "0"
+    balancer:
+      strategy: "cost"
+      cachingCost.awaitInitialization: "false"
+    loadqueuepeon:
+      type: "curator"
+      repeatDelay: "PT0.050S"
+      http.batchSize: "1"
+    asOverlord:
+      enabled: "false"
+      overlordService: "NULL"
+    segment.awaitInitializationOnStart: "true"
+  serverview.type: "batch"
+  manager:
+    config.pollDuration: "PT1M"
+    segments.pollDuration: "PT1M"
+    rules:
+      pollDuration: "PT1M"
+      defaultRule: "_default"
+      alertThreshold: "PT10M"
+    lookups:
+      hostDeleteTimeout: "PT1S"
+      hostUpdateTimeout: "PT10S"
+      deleteAllTimeout: "PT10S"
+      updateAllTimeout: "PT60S"
+      threadPoolSize: "10"
+      period: "30_000"

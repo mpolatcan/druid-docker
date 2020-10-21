@@ -1,0 +1,55 @@
+druid:
+  host: "NULL"
+  bindOnHost: "false"
+  plaintextPort: "8091"
+  tlsPort: "8291"
+  service: "druid/middlemanager"
+  indexer:
+    runner:
+      allowedPrefixes: "NULL"
+      compressZnodes: "true"
+      classpath: "NULL"
+      javaCommand: "java"
+      javaOptsArray: "[]"
+      maxZnodeBytes: "524288"
+      startPort: "8100"
+      endPort: "65535"
+      ports: "[]"
+    task:
+      baseDir: "NULL"
+      baseTaskDir: "${druid.indexer.task.baseDir}/persistent/task"
+      defaultHadoopCoordinates: "org.apache.hadoop:hadoop-client:2.8.5"
+      defaultRowFlushBoundary: "75000"
+      directoryLockTimeout: "PT10M"
+      gracefulShutdownTimeout: "PT5M"
+      hadoopWorkingPath: "/tmp/druid-indexing"
+      restoreTasksOnRestart: "false"
+    server:
+      maxChatRequests: "0"
+  worker:
+    ip: "localhost"
+    version: "0"
+    capacity: "NULL"
+    category: "__default_worker_category"
+  processing:
+    buffer:
+      sizeBytes: "NULL"
+      poolCacheMaxCount: "NULL"
+    formatString: "processing-%s"
+    numMergeBuffers: "NULL"
+    numThreads: "NULL"
+    columnCache.sizeBytes: "0"
+    fifo: "false"
+    tmpDir: "NULL"
+  realtime.cache:
+    useCache: "false"
+    populateCache: "false"
+    unCacheable: "[]"
+    maxEntrySize: "NULL"
+  peon:
+    mode: "remote"
+    taskActionClient.retry:
+      minWait: "PT5S"
+      maxWait: "PT1M"
+      maxRetryCount: "60"
+    defaultSegmentWriteOutMediumFactory.type: "tmpFile"

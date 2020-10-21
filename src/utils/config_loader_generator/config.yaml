@@ -1,0 +1,49 @@
+config_loader_sh_template: |
+  #!/usr/bin/env bash
+  function load_config() {{
+      if [[ "$2" != "NULL" ]]; then
+          printf "$1=$2\n" >> "${{DRUID_CONF_DIR}}/$3"
+      fi
+  }}
+
+  # Create configuration directories
+  mkdir -p ${{DRUID_CONF_DIR}}/{{_common,broker,coordinator,historical,middleManager,overlord}}
+
+  # Load JVM configurations of each Druid service
+  DRUID_SERVICES=(broker coordinator historical middleManager overlord)
+  for DRUID_SERVICE in ${{DRUID_SERVICES[@]}}; do
+      ENV_VAR_PREFIX=$(echo $DRUID_SERVICE | tr '[a-z]' '[A-Z]')
+
+      ENV_VAR_JVM_HEAP_SIZE="${{ENV_VAR_PREFIX}}_JVM_HEAP_SIZE"
+      ENV_VAR_JVM_MAX_HEAP_SIZE="${{ENV_VAR_PREFIX}}_JVM_MAX_HEAP_SIZE"
+      ENV_VAR_JVM_MAX_DIRECT_MEMORY_SIZE="${{ENV_VAR_PREFIX}}_JVM_MAX_DIRECT_MEMORY_SIZE"
+
+  cat <<EOF > ${{DRUID_CONF_DIR}}/$DRUID_SERVICE/jvm.config
+  -server
+  -Xms${{!ENV_VAR_JVM_HEAP_SIZE:=512m}}
+  -Xmx${{!ENV_VAR_JVM_MAX_HEAP_SIZE:=2g}}
+  -XX:MaxDirectMemorySize=${{!ENV_VAR_JVM_MAX_DIRECT_MEMORY_SIZE:=13g}}
+  -XX:+ExitOnOutOfMemoryError
+  -Duser.timezone=UTC
+  -Dfile.encoding=UTF-8
+  -Djava.io.tmpdir=var/tmp
+  -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager
+  EOF
+  done
+
+  {load_fn_calls}
+
+config_files:
+  - path: druid_configs/common.yaml
+    filename: _common/common.runtime.properties
+  - path: druid_configs/broker.yaml
+    filename: broker/runtime.properties
+  - path: druid_configs/coordinator.yaml
+    filename: coordinator/runtime.properties
+  - path: druid_configs/historical.yaml
+    filename: historical/runtime.properties
+  - path: druid_configs/middlemanager.yaml
+    filename: middleManager/runtime.properties
+  - path: druid_configs/overlord.yaml
+    filename: overlord/runtime.properties
+output_dir: ../../base
