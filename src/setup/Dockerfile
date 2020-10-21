@@ -12,7 +12,6 @@ RUN wget ${DRUID_DOWNLOAD_LINK} && \
     mv ${DRUID_USER_HOME}/apache-druid-${DRUID_VERSION}/* ${DRUID_HOME} && \
     rm -r apache-druid-${DRUID_VERSION}-bin.tar.gz ${DRUID_USER_HOME}/apache-druid-${DRUID_VERSION} && \
     rm -r ${DRUID_CONF_DIR}/druid ${DRUID_CONF_DIR}/supervise ${DRUID_CONF_DIR}/zk && \
-    mkdir -p ${DRUID_CONF_DIR} && \
     chown -R druid:druid ${DRUID_USER_HOME}
 
 USER druid

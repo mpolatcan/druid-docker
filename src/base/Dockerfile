@@ -21,6 +21,6 @@ RUN apt-get update && \
                                                libfindbin-libs-perl && \
     rm -rf /var/lib/apt/lists/* && \
     addgroup druid && adduser --disabled-password --gecos "" --ingroup druid druid && \
-    mkdir -p ${DRUID_HOME} ${DRUID_CONF_DIR} && \
+    mkdir -p ${DRUID_HOME} && \
     chown -R druid:druid ${DRUID_USER_HOME} && \
     chmod +x ${DRUID_USER_HOME}/druid_config_loader.sh ${DRUID_USER_HOME}/entrypoint.sh
