@@ -6,10 +6,10 @@ function load_config() {
 }
 
 # Create configuration directories
-mkdir -p ${DRUID_CONF_DIR}/{_common,broker,coordinator,historical,middleManager,overlord}
+mkdir -p ${DRUID_CONF_DIR}/{_common,broker,coordinator,historical,middleManager,overlord,router}
 
 # Load JVM configurations of each Druid service
-DRUID_SERVICES=(broker coordinator historical middleManager overlord)
+DRUID_SERVICES=(broker coordinator historical middleManager overlord router)
 for DRUID_SERVICE in ${DRUID_SERVICES[@]}; do
     ENV_VAR_PREFIX=$(echo $DRUID_SERVICE | tr '[a-z]' '[A-Z]')
 
