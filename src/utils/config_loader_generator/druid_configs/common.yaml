@@ -11,17 +11,17 @@ druid:
   zk:
     paths:
       base: "/druid"
-      propertiesPath: "${druid.zk.paths.base}/properties"
-      announcementsPath: "${druid.zk.paths.base}/announcements"
-      liveSegmentsPath: "${druid.zk.paths.base}/segments"
-      loadQueuePath: "${druid.zk.paths.base}/loadQueue"
-      coordinatorPath: "${druid.zk.paths.base}/coordinator"
-      servedSegmentsPath: "${druid.zk.paths.base}/servedSegments"
+      propertiesPath: "\\${druid.zk.paths.base}/properties"
+      announcementsPath: "\\${druid.zk.paths.base}/announcements"
+      liveSegmentsPath: "\\${druid.zk.paths.base}/segments"
+      loadQueuePath: "\\${druid.zk.paths.base}/loadQueue"
+      coordinatorPath: "\\${druid.zk.paths.base}/coordinator"
+      servedSegmentsPath: "\\${druid.zk.paths.base}/servedSegments"
       indexer:
-        base: "${druid.zk.paths.base}/indexer"
-        announcementsPath: "${druid.zk.paths.indexer.base}/announcements"
-        tasksPath: "${druid.zk.paths.indexer.base}/tasks"
-        statusPath: "${druid.zk.paths.indexer.base}/status"
+        base: "\\${druid.zk.paths.base}/indexer"
+        announcementsPath: "\\${druid.zk.paths.indexer.base}/announcements"
+        tasksPath: "\\${druid.zk.paths.indexer.base}/tasks"
+        statusPath: "\\${druid.zk.paths.indexer.base}/status"
     service:
       host: "NULL"
       user: "NULL"

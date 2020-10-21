@@ -17,7 +17,7 @@ druid:
       ports: "[]"
     task:
       baseDir: "NULL"
-      baseTaskDir: "${druid.indexer.task.baseDir}/persistent/task"
+      baseTaskDir: "\\${druid.indexer.task.baseDir}/persistent/task"
       defaultHadoopCoordinates: "org.apache.hadoop:hadoop-client:2.8.5"
       defaultRowFlushBoundary: "75000"
       directoryLockTimeout: "PT10M"

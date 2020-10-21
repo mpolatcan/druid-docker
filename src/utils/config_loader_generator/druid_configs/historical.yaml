@@ -23,7 +23,7 @@ druid:
     locationSelectorStragey: "leastBytesUsed"
     deleteOnRemove: "true"
     dropSegmentDelayMillis: "30000"
-    infoDir: "${first_location}/info_dir"
+    infoDir: "NULL"
     announceIntervalMillis: "5000"
     numLoadingThreads: "NULL"
     numBootstrapThreads: "NULL"
