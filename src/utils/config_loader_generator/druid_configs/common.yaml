@@ -61,14 +61,14 @@ druid:
       trustStoreAlgorithm: "NULL"
       trustStorePassword: "NULL"
   auth:
-    authenticatorChain: "[\"allowAll\"]"
-    authorizers: "[\"allowAll\"]"
-    unsecuredPaths: "[]"
+    authenticatorChain: "NULL"
+    authorizers: "NULL"
+    unsecuredPaths: "NULL"
     allowUnauthenticatedHttpOptions: "false"
-  escalator.type: "\"noop\""
+  escalator.type: "NULL"
   startup.logging:
     logProperties: "false"
-    maskProperties: "[\"password\"]"
+    maskProperties: "NULL"
   request.logging:
     type: "NULL"
     dir: "NULL"
