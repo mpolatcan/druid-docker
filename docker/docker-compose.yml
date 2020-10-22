@@ -30,6 +30,7 @@ services:
     environment:
       DRUID_SERVICES: |
         router
+      DRUID_ROUTER_MANAGEMENTPROXY_ENABLED: "true"
     env_file:
       - druid.env
     ports:

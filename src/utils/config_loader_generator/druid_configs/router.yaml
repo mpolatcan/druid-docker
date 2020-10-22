@@ -1,5 +1,5 @@
 druid:
-  host: "=${DRUID_ROUTER_HOSTNAME:=NULL},${DRUID_ROUTER_HOSTNAME:=NULL},${HOSTNAME}"
+  host: "?${DRUID_ROUTER_HOSTNAME:=NULL},${DRUID_ROUTER_HOSTNAME:=NULL},${HOSTNAME}"
   bindOnHost: "false"
   plaintextPort: "8888"
   tlsPort: "9088"

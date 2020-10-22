@@ -481,7 +481,7 @@ load_config "druid.supervisor.taskUnhealthinessThreshold" "${DRUID_SUPERVISOR_TA
 load_config "druid.supervisor.storeStackTrace" "${DRUID_SUPERVISOR_STORESTACKTRACE:=false}" "overlord/runtime.properties"
 load_config "druid.supervisor.maxStoreExceptionEvents" "${DRUID_SUPERVISOR_MAXSTOREEXCEPTIONEVENTS:=NULL}" "overlord/runtime.properties"
 # ===========================================================================
-load_config "druid.host" "${DRUID_ROUTER_HOSTNAME:=NULL},${DRUID_ROUTER_HOSTNAME:=NULL},${HOSTNAME}" "router/runtime.properties"
+load_config_with_opt "druid.host" "${DRUID_ROUTER_HOSTNAME:=NULL}" "${DRUID_ROUTER_HOSTNAME:=NULL}" "${HOSTNAME}" "router/runtime.properties"
 load_config "druid.bindOnHost" "${DRUID_BINDONHOST:=false}" "router/runtime.properties"
 load_config "druid.plaintextPort" "${DRUID_PLAINTEXTPORT:=8888}" "router/runtime.properties"
 load_config "druid.tlsPort" "${DRUID_TLSPORT:=9088}" "router/runtime.properties"
