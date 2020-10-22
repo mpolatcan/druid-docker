@@ -20,10 +20,10 @@ druid:
       maxRequestHeaderSize: "NULL"
   segmentCache:
     locations: "[{\\\"path\\\":\\\"/mnt/druidSegments\\\",\\\"maxSize\\\":\\\"10k\\\",\\\"freeSpacePercent\\\":1.0\\}]"
-    locationSelectorStrategy: "leastBytesUsed"
+    locationSelectorStrategy: "NULL"
     deleteOnRemove: "true"
     dropSegmentDelayMillis: "30000"
-    infoDir: "NULL"
+    infoDir: "=${DRUID_HOME}/info_dir"
     announceIntervalMillis: "5000"
     numLoadingThreads: "NULL"
     numBootstrapThreads: "NULL"
