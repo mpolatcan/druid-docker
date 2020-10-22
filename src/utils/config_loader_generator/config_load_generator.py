@@ -13,6 +13,7 @@ class Constants:
     KEY_FILENAME = "filename"
     CONFIG_LOADER_STD_STATEMENT_FMT = "load_config \"{property}\" ${{{env_var_name}:={env_var_value}}} \"{config_filename}\""
     CONFIG_LOADER_SUBST_STATEMENT_FMT = "load_config \"{property}\" \"{substitution}\" \"{config_filename}\""
+    CONFIG_LOADER_OPT_SUBST_STATEMENT_FMT = "load_config_with_opt \"{property}\" \"{check}\" \"{substitution_not_null}\" \"{substitution_null}\" \"{config_filename}\""
 
 
 class ConfigLoaderGenerator:
@@ -35,6 +36,12 @@ class ConfigLoaderGenerator:
                     load_fn_calls.append(Constants.CONFIG_LOADER_SUBST_STATEMENT_FMT.format(
                         property=property_name, substitution=value[1:], config_filename=config_filename)
                     )
+                elif value.find("?") == 0:  # optional load config statement
+                    tokens = value.split(",")
+
+                    load_fn_calls.append(Constants.CONFIG_LOADER_OPT_SUBST_STATEMENT_FMT.format(
+                        property=property_name, check=tokens[0][1:], substitution_not_null=tokens[1], substitution_null=tokens[2], config_filename=config_filename
+                    ))
                 else:
                     load_fn_calls.append(
                         Constants.CONFIG_LOADER_STD_STATEMENT_FMT.format(property=property_name,

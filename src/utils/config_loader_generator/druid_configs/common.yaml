@@ -1,7 +1,7 @@
 druid:
   extensions:
-    directory: "extensions"
-    hadoopDependenciesDir: "hadoop-dependencies"
+    directory: "=${DRUID_HOME}/extensions"
+    hadoopDependenciesDir: "=${DRUID_HOME}/hadoop-dependencies"
     loadList: "NULL"
     searchCurrentClassloader: "true"
     useExtensionClassloaderFirst: "false"
@@ -155,7 +155,7 @@ druid:
         durationToRetain: "NULL"
         initialDelay: "NULL"
         delay: "NULL"
-      directory: "log"
+      directory: "=${DRUID_HOME}/log"
       s3Bucket: "NULL"
       s3Prefix: "NULL"
       disableAcl: "false"

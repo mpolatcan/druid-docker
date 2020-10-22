@@ -1,5 +1,5 @@
 druid:
-  host: "NULL"
+  host: "?${DRUID_COORDINATOR_HOSTNAME},${DRUID_COORDINATOR_HOSTNAME},${HOSTNAME}"
   bindOnHost: "false"
   plaintextPort: "8081"
   tlsPort: "8281"
@@ -41,4 +41,4 @@ druid:
       deleteAllTimeout: "PT10S"
       updateAllTimeout: "PT60S"
       threadPoolSize: "10"
-      period: "30_000"
+      period: "NULL"

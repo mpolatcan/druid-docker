@@ -1,5 +1,5 @@
 druid:
-  host: "NULL"
+  host: "?${DRUID_HISTORICAL_HOSTNAME},${DRUID_HISTORICAL_HOSTNAME},${HOSTNAME}"
   bindOnHost: "false"
   plaintextPort: "8083"
   tlsPort: "8283"

@@ -1,12 +1,102 @@
 version: "3.5"
 services:
+  zookeeper:
+    image: zookeeper
+    container_name: zookeeper
+    hostname: zookeeper
+    environment:
+      ZOO_MY_ID: "1"
+      ZOO_SERVERS: "server.1=0.0.0.0:2888:3888;2181"
+    ports:
+      - 2181:2181
+
+  postgres:
+    image: postgres
+    container_name: postgres
+    hostname: postgres
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    ports:
+    - 5432:5432
+
   druid-router:
     image: mpolatcan/druid:0.20.0-java8
-    hostname: druid
+    hostname: druid-router
+    container_name: druid-router
     environment:
       DRUID_SERVICES: |
         router
-      DRUID_REQUEST_LOGGING_TYPE: "file"
-      DRUID_REQUEST_LOGGING_DIR: "/home/druid/log"
+      DRUID_ZK_SERVICE_HOST: "zookeeper"
+      DRUID_EXTENSIONS_LOADLIST: "[\"postgresql-metadata-storage\"]"
+      DRUID_METADATA_STORAGE_TYPE: "postgresql"
+      DRUID_METADATA_STORAGE_CONNECTOR_CONNECTIONURI: "jdbc:postgresql://postgres:5432/druid"
+      DRUID_METADATA_STORAGE_CONNECTOR_USER: "postgres"
+      DRUID_METADATA_STORAGE_CONNECTOR_PASSWORD: "postgres"
+      DRUID_EXTENSIONS_DIRECTORY: "/home/druid/druid/extensions"
     ports:
       - 8888:8888
+
+  druid-coordinator:
+    image: mpolatcan/druid:0.20.0-java8
+    container_name: druid-coordinator
+    hostname: druid-coordinator
+    environment:
+      DRUID_SERVICES: |
+        coordinator
+      DRUID_ZK_SERVICE_HOST: "zookeeper"
+      COORDINATOR_JVM_HEAP_SIZE: "512m"
+      DRUID_EXTENSIONS_LOADLIST: "[\"postgresql-metadata-storage\"]"
+      DRUID_METADATA_STORAGE_TYPE: "postgresql"
+      DRUID_METADATA_STORAGE_CONNECTOR_CONNECTIONURI: "jdbc:postgresql://postgres:5432/druid"
+      DRUID_METADATA_STORAGE_CONNECTOR_USER: "postgres"
+      DRUID_METADATA_STORAGE_CONNECTOR_PASSWORD: "postgres"
+      DRUID_EXTENSIONS_DIRECTORY: "/home/druid/druid/extensions"
+
+  druid-middlemanager:
+    image: mpolatcan/druid:0.20.0-java8
+    container_name: druid-middlemanager
+    hostname: druid-middlemanager
+    environment:
+      DRUID_SERVICES: |
+        middlemanager
+      DRUID_ZK_SERVICE_HOST: "zookeeper"
+      MIDDLEMANAGER_JVM_HEAP_SIZE: "512m"
+      DRUID_EXTENSIONS_LOADLIST: "[\"postgresql-metadata-storage\"]"
+      DRUID_METADATA_STORAGE_TYPE: "postgresql"
+      DRUID_METADATA_STORAGE_CONNECTOR_CONNECTIONURI: "jdbc:postgresql://postgres:5432/druid"
+      DRUID_METADATA_STORAGE_CONNECTOR_USER: "postgres"
+      DRUID_METADATA_STORAGE_CONNECTOR_PASSWORD: "postgres"
+      DRUID_EXTENSIONS_DIRECTORY: "/home/druid/druid/extensions"
+
+  druid-broker:
+    image: mpolatcan/druid:0.20.0-java8
+    container_name: druid-broker
+    hostname: druid-broker
+    environment:
+      DRUID_SERVICES: |
+        broker
+      DRUID_ZK_SERVICE_HOST: "zookeeper"
+      BROKER_JVM_HEAP_SIZE: "512m"
+      DRUID_EXTENSIONS_LOADLIST: "[\"postgresql-metadata-storage\"]"
+      DRUID_METADATA_STORAGE_TYPE: "postgresql"
+      DRUID_METADATA_STORAGE_CONNECTOR_CONNECTIONURI: "jdbc:postgresql://postgres:5432/druid"
+      DRUID_METADATA_STORAGE_CONNECTOR_USER: "postgres"
+      DRUID_METADATA_STORAGE_CONNECTOR_PASSWORD: "postgres"
+      DRUID_EXTENSIONS_DIRECTORY: "/home/druid/druid/extensions"
+
+  druid-historical:
+    image: mpolatcan/druid:0.20.0-java8
+    container_name: druid-historical
+    hostname: druid-historical
+    environment:
+      DRUID_SERVICES: |
+        historical
+      DRUID_ZK_SERVICE_HOST: "zookeeper"
+      HISTORICAL_JVM_HEAP_SIZE: "512m"
+      DRUID_EXTENSIONS_LOADLIST: "[\"postgresql-metadata-storage\"]"
+      DRUID_METADATA_STORAGE_TYPE: "postgresql"
+      DRUID_METADATA_STORAGE_CONNECTOR_CONNECTIONURI: "jdbc:postgresql://postgres:5432/druid"
+      DRUID_METADATA_STORAGE_CONNECTOR_USER: "postgres"
+      DRUID_METADATA_STORAGE_CONNECTOR_PASSWORD: "postgres"
+      DRUID_EXTENSIONS_DIRECTORY: "/home/druid/druid/extensions"

@@ -5,8 +5,17 @@ function load_config() {
     fi
 }
 
+function load_config_with_opt() {
+    if [[ "$2" != "NULL" ]]
+        then
+            printf "$1=$3\n" >> "${DRUID_CONF_DIR}/$5"
+    else
+        printf "$1=$4\n" >> "${DRUID_CONF_DIR}/$5"
+    fi
+}
+
 # Create configuration directories
-mkdir -p ${DRUID_CONF_DIR}/{_common,broker,coordinator,historical,middleManager,overlord,router}
+mkdir -p ${DRUID_CONF_DIR}/{_common,broker,coordinator,historical,middlemanager,overlord,router}
 
 # Copy default log4j2.xml configuration to _common/log4j2.xml
 cat <<EOF > ${DRUID_CONF_DIR}/_common/log4j2.xml
@@ -32,7 +41,7 @@ cat <<EOF > ${DRUID_CONF_DIR}/_common/log4j2.xml
 EOF
 
 # Load JVM configurations of each Druid service
-DRUID_SERVICES=(broker coordinator historical middleManager overlord router)
+DRUID_SERVICES=(broker coordinator historical middlemanager overlord router)
 for DRUID_SERVICE in ${DRUID_SERVICES[@]}; do
     ENV_VAR_PREFIX=$(echo $DRUID_SERVICE | tr '[a-z]' '[A-Z]')
 
@@ -46,7 +55,7 @@ cat <<EOF > ${DRUID_CONF_DIR}/$DRUID_SERVICE/jvm.config
 -server
 -Xms${!ENV_VAR_JVM_HEAP_SIZE:=512m}
 -Xmx${!ENV_VAR_JVM_MAX_HEAP_SIZE:=2g}
--XX:MaxDirectMemorySize=${!ENV_VAR_JVM_MAX_DIRECT_MEMORY_SIZE:=13g}
+-XX:MaxDirectMemorySize=${!ENV_VAR_JVM_MAX_DIRECT_MEMORY_SIZE:=3g}
 -XX:+ExitOnOutOfMemoryError
 -Duser.timezone=UTC
 -Dfile.encoding=UTF-8
@@ -55,8 +64,8 @@ cat <<EOF > ${DRUID_CONF_DIR}/$DRUID_SERVICE/jvm.config
 EOF
 done
 
-load_config "druid.extensions.directory" ${DRUID_EXTENSIONS_DIRECTORY:=extensions} "_common/common.runtime.properties"
-load_config "druid.extensions.hadoopDependenciesDir" ${DRUID_EXTENSIONS_HADOOPDEPENDENCIESDIR:=hadoop-dependencies} "_common/common.runtime.properties"
+load_config "druid.extensions.directory" "${DRUID_HOME}/extensions" "_common/common.runtime.properties"
+load_config "druid.extensions.hadoopDependenciesDir" "${DRUID_HOME}/hadoop-dependencies" "_common/common.runtime.properties"
 load_config "druid.extensions.loadList" ${DRUID_EXTENSIONS_LOADLIST:=NULL} "_common/common.runtime.properties"
 load_config "druid.extensions.searchCurrentClassloader" ${DRUID_EXTENSIONS_SEARCHCURRENTCLASSLOADER:=true} "_common/common.runtime.properties"
 load_config "druid.extensions.useExtensionClassloaderFirst" ${DRUID_EXTENSIONS_USEEXTENSIONCLASSLOADERFIRST:=false} "_common/common.runtime.properties"
@@ -183,7 +192,7 @@ load_config "druid.indexer.logs.kill.enabled" ${DRUID_INDEXER_LOGS_KILL_ENABLED:
 load_config "druid.indexer.logs.kill.durationToRetain" ${DRUID_INDEXER_LOGS_KILL_DURATIONTORETAIN:=NULL} "_common/common.runtime.properties"
 load_config "druid.indexer.logs.kill.initialDelay" ${DRUID_INDEXER_LOGS_KILL_INITIALDELAY:=NULL} "_common/common.runtime.properties"
 load_config "druid.indexer.logs.kill.delay" ${DRUID_INDEXER_LOGS_KILL_DELAY:=NULL} "_common/common.runtime.properties"
-load_config "druid.indexer.logs.directory" ${DRUID_INDEXER_LOGS_DIRECTORY:=log} "_common/common.runtime.properties"
+load_config "druid.indexer.logs.directory" "${DRUID_HOME}/log" "_common/common.runtime.properties"
 load_config "druid.indexer.logs.s3Bucket" ${DRUID_INDEXER_LOGS_S3BUCKET:=NULL} "_common/common.runtime.properties"
 load_config "druid.indexer.logs.s3Prefix" ${DRUID_INDEXER_LOGS_S3PREFIX:=NULL} "_common/common.runtime.properties"
 load_config "druid.indexer.logs.disableAcl" ${DRUID_INDEXER_LOGS_DISABLEACL:=false} "_common/common.runtime.properties"
@@ -236,7 +245,7 @@ load_config "druid.query.groupBy.numParallelCombineThreads" ${DRUID_QUERY_GROUPB
 load_config "druid.query.groupBy.maxIntermediateRows" ${DRUID_QUERY_GROUPBY_MAXINTERMEDIATEROWS:=50000} "_common/common.runtime.properties"
 load_config "druid.query.groupBy.maxResults" ${DRUID_QUERY_GROUPBY_MAXRESULTS:=500000} "_common/common.runtime.properties"
 # ===========================================================================
-load_config "druid.host" ${DRUID_HOST:=NULL} "broker/runtime.properties"
+load_config_with_opt "druid.host" "${DRUID_BROKER_HOSTNAME}" "${DRUID_BROKER_HOSTNAME}" "${HOSTNAME}" "broker/runtime.properties"
 load_config "druid.bindOnHost" ${DRUID_BINDONHOST:=false} "broker/runtime.properties"
 load_config "druid.plaintextPort" ${DRUID_PLAINTEXTPORT:=8082} "broker/runtime.properties"
 load_config "druid.tlsPort" ${DRUID_TLSPORT:=8282} "broker/runtime.properties"
@@ -310,7 +319,7 @@ load_config "druid.sql.planner.sqlTimeZone" ${DRUID_SQL_PLANNER_SQLTIMEZONE:=UTC
 load_config "druid.sql.planner.metadataSegmentCacheEnable" ${DRUID_SQL_PLANNER_METADATASEGMENTCACHEENABLE:=false} "broker/runtime.properties"
 load_config "druid.sql.planner.metadataSegmentPollPeriod" ${DRUID_SQL_PLANNER_METADATASEGMENTPOLLPERIOD:=60000} "broker/runtime.properties"
 # ===========================================================================
-load_config "druid.host" ${DRUID_HOST:=NULL} "coordinator/runtime.properties"
+load_config_with_opt "druid.host" "${DRUID_COORDINATOR_HOSTNAME}" "${DRUID_COORDINATOR_HOSTNAME}" "${HOSTNAME}" "coordinator/runtime.properties"
 load_config "druid.bindOnHost" ${DRUID_BINDONHOST:=false} "coordinator/runtime.properties"
 load_config "druid.plaintextPort" ${DRUID_PLAINTEXTPORT:=8081} "coordinator/runtime.properties"
 load_config "druid.tlsPort" ${DRUID_TLSPORT:=8281} "coordinator/runtime.properties"
@@ -343,9 +352,9 @@ load_config "druid.manager.lookups.hostUpdateTimeout" ${DRUID_MANAGER_LOOKUPS_HO
 load_config "druid.manager.lookups.deleteAllTimeout" ${DRUID_MANAGER_LOOKUPS_DELETEALLTIMEOUT:=PT10S} "coordinator/runtime.properties"
 load_config "druid.manager.lookups.updateAllTimeout" ${DRUID_MANAGER_LOOKUPS_UPDATEALLTIMEOUT:=PT60S} "coordinator/runtime.properties"
 load_config "druid.manager.lookups.threadPoolSize" ${DRUID_MANAGER_LOOKUPS_THREADPOOLSIZE:=10} "coordinator/runtime.properties"
-load_config "druid.manager.lookups.period" ${DRUID_MANAGER_LOOKUPS_PERIOD:=30_000} "coordinator/runtime.properties"
+load_config "druid.manager.lookups.period" ${DRUID_MANAGER_LOOKUPS_PERIOD:=NULL} "coordinator/runtime.properties"
 # ===========================================================================
-load_config "druid.host" ${DRUID_HOST:=NULL} "historical/runtime.properties"
+load_config_with_opt "druid.host" "${DRUID_HISTORICAL_HOSTNAME}" "${DRUID_HISTORICAL_HOSTNAME}" "${HOSTNAME}" "historical/runtime.properties"
 load_config "druid.bindOnHost" ${DRUID_BINDONHOST:=false} "historical/runtime.properties"
 load_config "druid.plaintextPort" ${DRUID_PLAINTEXTPORT:=8083} "historical/runtime.properties"
 load_config "druid.tlsPort" ${DRUID_TLSPORT:=8283} "historical/runtime.properties"
@@ -385,52 +394,52 @@ load_config "druid.historical.cache.populateCache" ${DRUID_HISTORICAL_CACHE_POPU
 load_config "druid.historical.cache.unCacheable" ${DRUID_HISTORICAL_CACHE_UNCACHEABLE:=[]} "historical/runtime.properties"
 load_config "druid.historical.cache.maxEntrySize" ${DRUID_HISTORICAL_CACHE_MAXENTRYSIZE:=NULL} "historical/runtime.properties"
 # ===========================================================================
-load_config "druid.host" ${DRUID_HOST:=NULL} "middleManager/runtime.properties"
-load_config "druid.bindOnHost" ${DRUID_BINDONHOST:=false} "middleManager/runtime.properties"
-load_config "druid.plaintextPort" ${DRUID_PLAINTEXTPORT:=8091} "middleManager/runtime.properties"
-load_config "druid.tlsPort" ${DRUID_TLSPORT:=8291} "middleManager/runtime.properties"
-load_config "druid.service" ${DRUID_SERVICE:=druid/middlemanager} "middleManager/runtime.properties"
-load_config "druid.indexer.runner.allowedPrefixes" ${DRUID_INDEXER_RUNNER_ALLOWEDPREFIXES:=NULL} "middleManager/runtime.properties"
-load_config "druid.indexer.runner.compressZnodes" ${DRUID_INDEXER_RUNNER_COMPRESSZNODES:=true} "middleManager/runtime.properties"
-load_config "druid.indexer.runner.classpath" ${DRUID_INDEXER_RUNNER_CLASSPATH:=NULL} "middleManager/runtime.properties"
-load_config "druid.indexer.runner.javaCommand" ${DRUID_INDEXER_RUNNER_JAVACOMMAND:=java} "middleManager/runtime.properties"
-load_config "druid.indexer.runner.javaOptsArray" ${DRUID_INDEXER_RUNNER_JAVAOPTSARRAY:=[]} "middleManager/runtime.properties"
-load_config "druid.indexer.runner.maxZnodeBytes" ${DRUID_INDEXER_RUNNER_MAXZNODEBYTES:=524288} "middleManager/runtime.properties"
-load_config "druid.indexer.runner.startPort" ${DRUID_INDEXER_RUNNER_STARTPORT:=8100} "middleManager/runtime.properties"
-load_config "druid.indexer.runner.endPort" ${DRUID_INDEXER_RUNNER_ENDPORT:=65535} "middleManager/runtime.properties"
-load_config "druid.indexer.runner.ports" ${DRUID_INDEXER_RUNNER_PORTS:=[]} "middleManager/runtime.properties"
-load_config "druid.indexer.task.baseDir" ${DRUID_INDEXER_TASK_BASEDIR:=NULL} "middleManager/runtime.properties"
-load_config "druid.indexer.task.baseTaskDir" ${DRUID_INDEXER_TASK_BASETASKDIR:=\${druid.indexer.task.baseDir}/persistent/task} "middleManager/runtime.properties"
-load_config "druid.indexer.task.defaultHadoopCoordinates" ${DRUID_INDEXER_TASK_DEFAULTHADOOPCOORDINATES:=org.apache.hadoop:hadoop-client:2.8.5} "middleManager/runtime.properties"
-load_config "druid.indexer.task.defaultRowFlushBoundary" ${DRUID_INDEXER_TASK_DEFAULTROWFLUSHBOUNDARY:=75000} "middleManager/runtime.properties"
-load_config "druid.indexer.task.directoryLockTimeout" ${DRUID_INDEXER_TASK_DIRECTORYLOCKTIMEOUT:=PT10M} "middleManager/runtime.properties"
-load_config "druid.indexer.task.gracefulShutdownTimeout" ${DRUID_INDEXER_TASK_GRACEFULSHUTDOWNTIMEOUT:=PT5M} "middleManager/runtime.properties"
-load_config "druid.indexer.task.hadoopWorkingPath" ${DRUID_INDEXER_TASK_HADOOPWORKINGPATH:=/tmp/druid-indexing} "middleManager/runtime.properties"
-load_config "druid.indexer.task.restoreTasksOnRestart" ${DRUID_INDEXER_TASK_RESTORETASKSONRESTART:=false} "middleManager/runtime.properties"
-load_config "druid.indexer.server.maxChatRequests" ${DRUID_INDEXER_SERVER_MAXCHATREQUESTS:=0} "middleManager/runtime.properties"
-load_config "druid.worker.ip" ${DRUID_WORKER_IP:=localhost} "middleManager/runtime.properties"
-load_config "druid.worker.version" ${DRUID_WORKER_VERSION:=0} "middleManager/runtime.properties"
-load_config "druid.worker.capacity" ${DRUID_WORKER_CAPACITY:=NULL} "middleManager/runtime.properties"
-load_config "druid.worker.category" ${DRUID_WORKER_CATEGORY:=__default_worker_category} "middleManager/runtime.properties"
-load_config "druid.processing.buffer.sizeBytes" ${DRUID_PROCESSING_BUFFER_SIZEBYTES:=NULL} "middleManager/runtime.properties"
-load_config "druid.processing.buffer.poolCacheMaxCount" ${DRUID_PROCESSING_BUFFER_POOLCACHEMAXCOUNT:=NULL} "middleManager/runtime.properties"
-load_config "druid.processing.formatString" ${DRUID_PROCESSING_FORMATSTRING:=processing-%s} "middleManager/runtime.properties"
-load_config "druid.processing.numMergeBuffers" ${DRUID_PROCESSING_NUMMERGEBUFFERS:=NULL} "middleManager/runtime.properties"
-load_config "druid.processing.numThreads" ${DRUID_PROCESSING_NUMTHREADS:=NULL} "middleManager/runtime.properties"
-load_config "druid.processing.columnCache.sizeBytes" ${DRUID_PROCESSING_COLUMNCACHE_SIZEBYTES:=0} "middleManager/runtime.properties"
-load_config "druid.processing.fifo" ${DRUID_PROCESSING_FIFO:=false} "middleManager/runtime.properties"
-load_config "druid.processing.tmpDir" ${DRUID_PROCESSING_TMPDIR:=NULL} "middleManager/runtime.properties"
-load_config "druid.realtime.cache.useCache" ${DRUID_REALTIME_CACHE_USECACHE:=false} "middleManager/runtime.properties"
-load_config "druid.realtime.cache.populateCache" ${DRUID_REALTIME_CACHE_POPULATECACHE:=false} "middleManager/runtime.properties"
-load_config "druid.realtime.cache.unCacheable" ${DRUID_REALTIME_CACHE_UNCACHEABLE:=[]} "middleManager/runtime.properties"
-load_config "druid.realtime.cache.maxEntrySize" ${DRUID_REALTIME_CACHE_MAXENTRYSIZE:=NULL} "middleManager/runtime.properties"
-load_config "druid.peon.mode" ${DRUID_PEON_MODE:=remote} "middleManager/runtime.properties"
-load_config "druid.peon.taskActionClient.retry.minWait" ${DRUID_PEON_TASKACTIONCLIENT_RETRY_MINWAIT:=PT5S} "middleManager/runtime.properties"
-load_config "druid.peon.taskActionClient.retry.maxWait" ${DRUID_PEON_TASKACTIONCLIENT_RETRY_MAXWAIT:=PT1M} "middleManager/runtime.properties"
-load_config "druid.peon.taskActionClient.retry.maxRetryCount" ${DRUID_PEON_TASKACTIONCLIENT_RETRY_MAXRETRYCOUNT:=60} "middleManager/runtime.properties"
-load_config "druid.peon.defaultSegmentWriteOutMediumFactory.type" ${DRUID_PEON_DEFAULTSEGMENTWRITEOUTMEDIUMFACTORY_TYPE:=tmpFile} "middleManager/runtime.properties"
+load_config_with_opt "druid.host" "${DRUID_MIDDLEMANAGER_HOSTNAME}" "${DRUID_MIDDLEMANAGER_HOSTNAME}" "${HOSTNAME}" "middlemanager/runtime.properties"
+load_config "druid.bindOnHost" ${DRUID_BINDONHOST:=false} "middlemanager/runtime.properties"
+load_config "druid.plaintextPort" ${DRUID_PLAINTEXTPORT:=8091} "middlemanager/runtime.properties"
+load_config "druid.tlsPort" ${DRUID_TLSPORT:=8291} "middlemanager/runtime.properties"
+load_config "druid.service" ${DRUID_SERVICE:=druid/middlemanager} "middlemanager/runtime.properties"
+load_config "druid.indexer.runner.allowedPrefixes" ${DRUID_INDEXER_RUNNER_ALLOWEDPREFIXES:=NULL} "middlemanager/runtime.properties"
+load_config "druid.indexer.runner.compressZnodes" ${DRUID_INDEXER_RUNNER_COMPRESSZNODES:=true} "middlemanager/runtime.properties"
+load_config "druid.indexer.runner.classpath" ${DRUID_INDEXER_RUNNER_CLASSPATH:=NULL} "middlemanager/runtime.properties"
+load_config "druid.indexer.runner.javaCommand" ${DRUID_INDEXER_RUNNER_JAVACOMMAND:=java} "middlemanager/runtime.properties"
+load_config "druid.indexer.runner.javaOptsArray" ${DRUID_INDEXER_RUNNER_JAVAOPTSARRAY:=[]} "middlemanager/runtime.properties"
+load_config "druid.indexer.runner.maxZnodeBytes" ${DRUID_INDEXER_RUNNER_MAXZNODEBYTES:=524288} "middlemanager/runtime.properties"
+load_config "druid.indexer.runner.startPort" ${DRUID_INDEXER_RUNNER_STARTPORT:=8100} "middlemanager/runtime.properties"
+load_config "druid.indexer.runner.endPort" ${DRUID_INDEXER_RUNNER_ENDPORT:=65535} "middlemanager/runtime.properties"
+load_config "druid.indexer.runner.ports" ${DRUID_INDEXER_RUNNER_PORTS:=[]} "middlemanager/runtime.properties"
+load_config "druid.indexer.task.baseDir" ${DRUID_INDEXER_TASK_BASEDIR:=NULL} "middlemanager/runtime.properties"
+load_config "druid.indexer.task.baseTaskDir" ${DRUID_INDEXER_TASK_BASETASKDIR:=\${druid.indexer.task.baseDir}/persistent/task} "middlemanager/runtime.properties"
+load_config "druid.indexer.task.defaultHadoopCoordinates" ${DRUID_INDEXER_TASK_DEFAULTHADOOPCOORDINATES:=org.apache.hadoop:hadoop-client:2.8.5} "middlemanager/runtime.properties"
+load_config "druid.indexer.task.defaultRowFlushBoundary" ${DRUID_INDEXER_TASK_DEFAULTROWFLUSHBOUNDARY:=75000} "middlemanager/runtime.properties"
+load_config "druid.indexer.task.directoryLockTimeout" ${DRUID_INDEXER_TASK_DIRECTORYLOCKTIMEOUT:=PT10M} "middlemanager/runtime.properties"
+load_config "druid.indexer.task.gracefulShutdownTimeout" ${DRUID_INDEXER_TASK_GRACEFULSHUTDOWNTIMEOUT:=PT5M} "middlemanager/runtime.properties"
+load_config "druid.indexer.task.hadoopWorkingPath" ${DRUID_INDEXER_TASK_HADOOPWORKINGPATH:=/tmp/druid-indexing} "middlemanager/runtime.properties"
+load_config "druid.indexer.task.restoreTasksOnRestart" ${DRUID_INDEXER_TASK_RESTORETASKSONRESTART:=false} "middlemanager/runtime.properties"
+load_config "druid.indexer.server.maxChatRequests" ${DRUID_INDEXER_SERVER_MAXCHATREQUESTS:=0} "middlemanager/runtime.properties"
+load_config "druid.worker.ip" ${DRUID_WORKER_IP:=localhost} "middlemanager/runtime.properties"
+load_config "druid.worker.version" ${DRUID_WORKER_VERSION:=0} "middlemanager/runtime.properties"
+load_config "druid.worker.capacity" ${DRUID_WORKER_CAPACITY:=NULL} "middlemanager/runtime.properties"
+load_config "druid.worker.category" ${DRUID_WORKER_CATEGORY:=__default_worker_category} "middlemanager/runtime.properties"
+load_config "druid.processing.buffer.sizeBytes" ${DRUID_PROCESSING_BUFFER_SIZEBYTES:=NULL} "middlemanager/runtime.properties"
+load_config "druid.processing.buffer.poolCacheMaxCount" ${DRUID_PROCESSING_BUFFER_POOLCACHEMAXCOUNT:=NULL} "middlemanager/runtime.properties"
+load_config "druid.processing.formatString" ${DRUID_PROCESSING_FORMATSTRING:=processing-%s} "middlemanager/runtime.properties"
+load_config "druid.processing.numMergeBuffers" ${DRUID_PROCESSING_NUMMERGEBUFFERS:=NULL} "middlemanager/runtime.properties"
+load_config "druid.processing.numThreads" ${DRUID_PROCESSING_NUMTHREADS:=NULL} "middlemanager/runtime.properties"
+load_config "druid.processing.columnCache.sizeBytes" ${DRUID_PROCESSING_COLUMNCACHE_SIZEBYTES:=0} "middlemanager/runtime.properties"
+load_config "druid.processing.fifo" ${DRUID_PROCESSING_FIFO:=false} "middlemanager/runtime.properties"
+load_config "druid.processing.tmpDir" ${DRUID_PROCESSING_TMPDIR:=NULL} "middlemanager/runtime.properties"
+load_config "druid.realtime.cache.useCache" ${DRUID_REALTIME_CACHE_USECACHE:=false} "middlemanager/runtime.properties"
+load_config "druid.realtime.cache.populateCache" ${DRUID_REALTIME_CACHE_POPULATECACHE:=false} "middlemanager/runtime.properties"
+load_config "druid.realtime.cache.unCacheable" ${DRUID_REALTIME_CACHE_UNCACHEABLE:=[]} "middlemanager/runtime.properties"
+load_config "druid.realtime.cache.maxEntrySize" ${DRUID_REALTIME_CACHE_MAXENTRYSIZE:=NULL} "middlemanager/runtime.properties"
+load_config "druid.peon.mode" ${DRUID_PEON_MODE:=remote} "middlemanager/runtime.properties"
+load_config "druid.peon.taskActionClient.retry.minWait" ${DRUID_PEON_TASKACTIONCLIENT_RETRY_MINWAIT:=PT5S} "middlemanager/runtime.properties"
+load_config "druid.peon.taskActionClient.retry.maxWait" ${DRUID_PEON_TASKACTIONCLIENT_RETRY_MAXWAIT:=PT1M} "middlemanager/runtime.properties"
+load_config "druid.peon.taskActionClient.retry.maxRetryCount" ${DRUID_PEON_TASKACTIONCLIENT_RETRY_MAXRETRYCOUNT:=60} "middlemanager/runtime.properties"
+load_config "druid.peon.defaultSegmentWriteOutMediumFactory.type" ${DRUID_PEON_DEFAULTSEGMENTWRITEOUTMEDIUMFACTORY_TYPE:=tmpFile} "middlemanager/runtime.properties"
 # ===========================================================================
-load_config "druid.host" ${DRUID_HOST:=NULL} "overlord/runtime.properties"
+load_config_with_opt "druid.host" "${DRUID_OVERLORD_HOSTNAME}" "${DRUID_OVERLORD_HOSTNAME}" "${HOSTNAME}" "overlord/runtime.properties"
 load_config "druid.bindOnHost" ${DRUID_BINDONHOST:=false} "overlord/runtime.properties"
 load_config "druid.plaintextPort" ${DRUID_PLAINTEXTPORT:=8090} "overlord/runtime.properties"
 load_config "druid.tlsPort" ${DRUID_TLSPORT:=8290} "overlord/runtime.properties"
