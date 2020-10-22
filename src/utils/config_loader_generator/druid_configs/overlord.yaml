@@ -3,7 +3,7 @@ druid:
   bindOnHost: "false"
   plaintextPort: "8090"
   tlsPort: "8290"
-  service: "druid/overlord"
+  service: "=druid/overlord"
   indexer:
     runner.type: "local"
     storage:
