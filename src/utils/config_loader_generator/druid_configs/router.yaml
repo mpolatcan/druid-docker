@@ -1,11 +1,12 @@
 druid:
   host: "?${DRUID_ROUTER_HOSTNAME:=NULL},${DRUID_ROUTER_HOSTNAME:=NULL},${HOSTNAME}"
-  bindOnHost: "false"
-  plaintextPort: "8888"
-  tlsPort: "9088"
+  bindOnHost: "=${DRUID_ROUTER_BINDONHOST:=false}"
+  plaintextPort: "=${DRUID_ROUTER_PLAINTEXT_PORT:=8888}"
+  tlsPort: "=${DRUID_ROUTER_TLS_PORT:=9088}"
   service: "=druid/router"
   router:
     defaultBrokerServiceName: "druid/broker"
+    coordinatorServiceName: "druid/coordinator"
     tierToBrokerMap: "{\\\"_default_tier\\\":\\\"\\\"\\}"
     defaultRule: "_default"
     pollPeriod: "PT1M"

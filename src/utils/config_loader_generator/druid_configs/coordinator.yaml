@@ -1,8 +1,8 @@
 druid:
   host: "?${DRUID_COORDINATOR_HOSTNAME:=NULL},${DRUID_COORDINATOR_HOSTNAME:=NULL},${HOSTNAME}"
-  bindOnHost: "false"
-  plaintextPort: "8081"
-  tlsPort: "8281"
+  bindOnHost: "=${DRUID_COORDINATOR_BINDONHOST:=false}"
+  plaintextPort: "=${DRUID_COORDINATOR_PLAINTEXT_PORT:=8081}"
+  tlsPort: "=${DRUID_COORDINATOR_TLS_PORT:=8281}"
   service: "=druid/coordinator"
   coordinator:
     period:

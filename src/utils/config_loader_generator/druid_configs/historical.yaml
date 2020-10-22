@@ -1,8 +1,8 @@
 druid:
   host: "?${DRUID_HISTORICAL_HOSTNAME:=NULL},${DRUID_HISTORICAL_HOSTNAME:=NULL},${HOSTNAME}"
-  bindOnHost: "false"
-  plaintextPort: "8083"
-  tlsPort: "8283"
+  bindOnHost: "=${DRUID_HISTORICAL_BINDONHOST:=false}"
+  plaintextPort: "=${DRUID_HISTORICAL_PLAINTEXT_PORT:=8083}"
+  tlsPort: "=${DRUID_HISTORICAL_TLS_PORT:=8283}"
   service: "=druid/historical"
   server:
     maxSize: "NULL"

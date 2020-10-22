@@ -1,8 +1,8 @@
 druid:
   host: "?${DRUID_BROKER_HOSTNAME:=NULL},${DRUID_BROKER_HOSTNAME:=NULL},${HOSTNAME}"
-  bindOnHost: "false"
-  plaintextPort: "8082"
-  tlsPort: "8282"
+  bindOnHost: "=${DRUID_BROKER_BINDONHOST:=false}"
+  plaintextPort: "=${DRUID_BROKER_PLAINTEXT_PORT:=8082}"
+  tlsPort: "=${DRUID_BROKER_TLS_PORT:=8282}"
   service: "=druid/broker"
   broker:
     balancery.type: "random"

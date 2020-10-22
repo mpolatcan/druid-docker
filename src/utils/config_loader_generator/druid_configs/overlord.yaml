@@ -1,8 +1,8 @@
 druid:
   host: "?${DRUID_OVERLORD_HOSTNAME:=NULL},${DRUID_OVERLORD_HOSTNAME:=NULL},${HOSTNAME}"
-  bindOnHost: "false"
-  plaintextPort: "8090"
-  tlsPort: "8290"
+  bindOnHost: "=${DRUID_OVERLORD_BINDONHOST:=false}"
+  plaintextPort: "=${DRUID_OVERLORD_PLAINTEXT_PORT:=8090}"
+  tlsPort: "=${DRUID_OVERLORD_TLS_PORT:=8290}"
   service: "=druid/overlord"
   indexer:
     runner.type: "local"
