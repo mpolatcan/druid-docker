@@ -1,0 +1,91 @@
+# Successfully runned components: coordinator, broker, overlord
+# Unsuccessfull runned components: middlemanager, historical
+version: "3.5"
+services:
+  zookeeper:
+    image: zookeeper
+    container_name: zookeeper
+    hostname: zookeeper
+    environment:
+      ZOO_MY_ID: "1"
+      ZOO_SERVERS: "server.1=0.0.0.0:2888:3888;2181"
+    ports:
+      - 2181:2181
+
+  postgres:
+    image: postgres
+    container_name: postgres
+    hostname: postgres
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "druid"
+    ports:
+    - 5432:5432
+
+  druid-router:
+    image: mpolatcan/druid:0.20.0-java8
+    hostname: druid-router
+    container_name: druid-router
+    environment:
+      DRUID_SERVICES: |
+        router
+    env_file:
+      - druid.env
+    ports:
+      - 8888:8888
+
+  druid-coordinator:
+    image: mpolatcan/druid:0.20.0-java8
+    container_name: druid-coordinator
+    hostname: druid-coordinator
+    environment:
+      DRUID_SERVICES: |
+        coordinator
+      COORDINATOR_JVM_HEAP_SIZE: "512m"
+    env_file:
+      - druid.env
+
+  druid-middlemanager:
+    image: mpolatcan/druid:0.20.0-java8
+    container_name: druid-middlemanager
+    hostname: druid-middlemanager
+    environment:
+      DRUID_SERVICES: |
+        middleManager
+      MIDDLEMANAGER_JVM_HEAP_SIZE: "512m"
+    env_file:
+      - druid.env
+
+  druid-broker:
+    image: mpolatcan/druid:0.20.0-java8
+    container_name: druid-broker
+    hostname: druid-broker
+    environment:
+      DRUID_SERVICES: |
+        broker
+      BROKER_JVM_HEAP_SIZE: "512m"
+    env_file:
+      - druid.env
+
+  druid-overlord:
+    image: mpolatcan/druid:0.20.0-java8
+    container_name: druid-overlord
+    hostname: druid-overlord
+    environment:
+      DRUID_SERVICES: |
+        overlord
+      BROKER_JVM_HEAP_SIZE: "512m"
+    env_file:
+      - druid.env
+
+  druid-historical:
+    image: mpolatcan/druid:0.20.0-java8
+    container_name: druid-historical
+    hostname: druid-historical
+    environment:
+      DRUID_SERVICES: |
+        historical
+      HISTORICAL_JVM_HEAP_SIZE: "512m"
+    env_file:
+      - druid.env

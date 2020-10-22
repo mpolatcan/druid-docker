@@ -19,8 +19,8 @@ druid:
       maxQueryTimeout: "NULL"
       maxRequestHeaderSize: "NULL"
   segmentCache:
-    locations: "'[{\"path\":\"/mnt/druidSegments\",\"maxSize\":\"10k\",\"freeSpacePercent\": 1.0}]'"
-    locationSelectorStragey: "leastBytesUsed"
+    locations: "[\\{\"path\":\"/mnt/druidSegments\",\"maxSize\":\"10k\",\"freeSpacePercent\": 1.0}]"
+    locationSelectorStrategy: "leastBytesUsed"
     deleteOnRemove: "true"
     dropSegmentDelayMillis: "30000"
     infoDir: "NULL"

@@ -41,7 +41,7 @@ cat <<EOF > ${DRUID_CONF_DIR}/_common/log4j2.xml
 EOF
 
 # Load JVM configurations of each Druid service
-DRUID_SERVICES=(broker coordinator historical middlemanager overlord router)
+DRUID_SERVICES=(broker coordinator historical middleManager overlord router)
 for DRUID_SERVICE in ${DRUID_SERVICES[@]}; do
     ENV_VAR_PREFIX=$(echo $DRUID_SERVICE | tr '[a-z]' '[A-Z]')
 
@@ -371,8 +371,8 @@ load_config "druid.server.http.gracefulShutdownTimeout" "${DRUID_SERVER_HTTP_GRA
 load_config "druid.server.http.unannouncePropagationDelay" "${DRUID_SERVER_HTTP_UNANNOUNCEPROPAGATIONDELAY:=PT0S}" "historical/runtime.properties"
 load_config "druid.server.http.maxQueryTimeout" "${DRUID_SERVER_HTTP_MAXQUERYTIMEOUT:=NULL}" "historical/runtime.properties"
 load_config "druid.server.http.maxRequestHeaderSize" "${DRUID_SERVER_HTTP_MAXREQUESTHEADERSIZE:=NULL}" "historical/runtime.properties"
-load_config "druid.segmentCache.locations" "${DRUID_SEGMENTCACHE_LOCATIONS:='[{"path":"/mnt/druidSegments","maxSize":"10k","freeSpacePercent": 1.0}]'}" "historical/runtime.properties"
-load_config "druid.segmentCache.locationSelectorStragey" "${DRUID_SEGMENTCACHE_LOCATIONSELECTORSTRAGEY:=leastBytesUsed}" "historical/runtime.properties"
+load_config "druid.segmentCache.locations" "${DRUID_SEGMENTCACHE_LOCATIONS:=[\{"path":"/mnt/druidSegments","maxSize":"10k","freeSpacePercent": 1.0}]}" "historical/runtime.properties"
+load_config "druid.segmentCache.locationSelectorStrategy" "${DRUID_SEGMENTCACHE_LOCATIONSELECTORSTRATEGY:=leastBytesUsed}" "historical/runtime.properties"
 load_config "druid.segmentCache.deleteOnRemove" "${DRUID_SEGMENTCACHE_DELETEONREMOVE:=true}" "historical/runtime.properties"
 load_config "druid.segmentCache.dropSegmentDelayMillis" "${DRUID_SEGMENTCACHE_DROPSEGMENTDELAYMILLIS:=30000}" "historical/runtime.properties"
 load_config "druid.segmentCache.infoDir" "${DRUID_SEGMENTCACHE_INFODIR:=NULL}" "historical/runtime.properties"
@@ -399,7 +399,7 @@ load_config "druid.bindOnHost" "${DRUID_BINDONHOST:=false}" "middleManager/runti
 load_config "druid.plaintextPort" "${DRUID_PLAINTEXTPORT:=8091}" "middleManager/runtime.properties"
 load_config "druid.tlsPort" "${DRUID_TLSPORT:=8291}" "middleManager/runtime.properties"
 load_config "druid.service" "${DRUID_SERVICE:=druid/middlemanager}" "middleManager/runtime.properties"
-load_config "druid.indexer.runner.allowedPrefixes" "${DRUID_INDEXER_RUNNER_ALLOWEDPREFIXES:=NULL}" "middleManager/runtime.properties"
+load_config "druid.indexer.runner.allowedPrefixes" "${DRUID_INDEXER_RUNNER_ALLOWEDPREFIXES:="com.metamx", "druid", "org.apache.druid", "user.timezone", "file.encoding", "java.io.tmpdir", "hadoop"}" "middleManager/runtime.properties"
 load_config "druid.indexer.runner.compressZnodes" "${DRUID_INDEXER_RUNNER_COMPRESSZNODES:=true}" "middleManager/runtime.properties"
 load_config "druid.indexer.runner.classpath" "${DRUID_INDEXER_RUNNER_CLASSPATH:=NULL}" "middleManager/runtime.properties"
 load_config "druid.indexer.runner.javaCommand" "${DRUID_INDEXER_RUNNER_JAVACOMMAND:=java}" "middleManager/runtime.properties"
@@ -410,7 +410,7 @@ load_config "druid.indexer.runner.endPort" "${DRUID_INDEXER_RUNNER_ENDPORT:=6553
 load_config "druid.indexer.runner.ports" "${DRUID_INDEXER_RUNNER_PORTS:=[]}" "middleManager/runtime.properties"
 load_config "druid.indexer.task.baseDir" "${DRUID_INDEXER_TASK_BASEDIR:=NULL}" "middleManager/runtime.properties"
 load_config "druid.indexer.task.baseTaskDir" "${DRUID_INDEXER_TASK_BASETASKDIR:=NULL}" "middleManager/runtime.properties"
-load_config "druid.indexer.task.defaultHadoopCoordinates" "${DRUID_INDEXER_TASK_DEFAULTHADOOPCOORDINATES:=org.apache.hadoop:hadoop-client:2.8.5}" "middleManager/runtime.properties"
+load_config "druid.indexer.task.defaultHadoopCoordinates" "${DRUID_INDEXER_TASK_DEFAULTHADOOPCOORDINATES:=["org.apache.hadoop:hadoop-client:2.8.5"]}" "middleManager/runtime.properties"
 load_config "druid.indexer.task.defaultRowFlushBoundary" "${DRUID_INDEXER_TASK_DEFAULTROWFLUSHBOUNDARY:=75000}" "middleManager/runtime.properties"
 load_config "druid.indexer.task.directoryLockTimeout" "${DRUID_INDEXER_TASK_DIRECTORYLOCKTIMEOUT:=PT10M}" "middleManager/runtime.properties"
 load_config "druid.indexer.task.gracefulShutdownTimeout" "${DRUID_INDEXER_TASK_GRACEFULSHUTDOWNTIMEOUT:=PT5M}" "middleManager/runtime.properties"
