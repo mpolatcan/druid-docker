@@ -8,6 +8,29 @@ function load_config() {
 # Create configuration directories
 mkdir -p ${DRUID_CONF_DIR}/{_common,broker,coordinator,historical,middleManager,overlord,router}
 
+# Copy default log4j2.xml configuration to _common/log4j2.xml
+cat <<EOF > ${DRUID_CONF_DIR}/_common/log4j2.xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration status="WARN">
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{ISO8601} %p [%t] %c - %m%n"/>
+    </Console>
+  </Appenders>
+  <Loggers>
+    <Root level="info">
+      <AppenderRef ref="Console"/>
+    </Root>
+
+    <!-- Uncomment to enable logging of all HTTP requests
+    <Logger name="org.apache.druid.jetty.RequestLog" additivity="false" level="DEBUG">
+        <AppenderRef ref="Console"/>
+    </Logger>
+    -->
+  </Loggers>
+</Configuration>
+EOF
+
 # Load JVM configurations of each Druid service
 DRUID_SERVICES=(broker coordinator historical middleManager overlord router)
 for DRUID_SERVICE in ${DRUID_SERVICES[@]}; do
@@ -89,9 +112,9 @@ load_config "druid.auth.allowUnauthenticatedHttpOptions" ${DRUID_AUTH_ALLOWUNAUT
 load_config "druid.escalator.type" ${DRUID_ESCALATOR_TYPE:=NULL} "_common/common.runtime.properties"
 load_config "druid.startup.logging.logProperties" ${DRUID_STARTUP_LOGGING_LOGPROPERTIES:=false} "_common/common.runtime.properties"
 load_config "druid.startup.logging.maskProperties" ${DRUID_STARTUP_LOGGING_MASKPROPERTIES:=NULL} "_common/common.runtime.properties"
-load_config "druid.request.logging.type" ${DRUID_REQUEST_LOGGING_TYPE:=NULL} "_common/common.runtime.properties"
-load_config "druid.request.logging.dir" ${DRUID_REQUEST_LOGGING_DIR:=NULL} "_common/common.runtime.properties"
-load_config "druid.request.logging.filePattern" ${DRUID_REQUEST_LOGGING_FILEPATTERN:=NULL} "_common/common.runtime.properties"
+load_config "druid.request.logging.type" ${DRUID_REQUEST_LOGGING_TYPE:=file} "_common/common.runtime.properties"
+load_config "druid.request.logging.dir" "${DRUID_LOG_DIR}" "_common/common.runtime.properties"
+load_config "druid.request.logging.filePattern" ${DRUID_REQUEST_LOGGING_FILEPATTERN:="yyyy-MM-dd'.log'"} "_common/common.runtime.properties"
 load_config "druid.request.logging.feed" ${DRUID_REQUEST_LOGGING_FEED:=NULL} "_common/common.runtime.properties"
 load_config "druid.request.logging.setMDC" ${DRUID_REQUEST_LOGGING_SETMDC:=false} "_common/common.runtime.properties"
 load_config "druid.request.logging.setContextMDC" ${DRUID_REQUEST_LOGGING_SETCONTEXTMDC:=False} "_common/common.runtime.properties"

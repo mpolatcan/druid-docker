@@ -9,6 +9,29 @@ config_loader_sh_template: |
   # Create configuration directories
   mkdir -p ${{DRUID_CONF_DIR}}/{{_common,broker,coordinator,historical,middleManager,overlord,router}}
 
+  # Copy default log4j2.xml configuration to _common/log4j2.xml
+  cat <<EOF > ${{DRUID_CONF_DIR}}/_common/log4j2.xml
+  <?xml version="1.0" encoding="UTF-8" ?>
+  <Configuration status="WARN">
+    <Appenders>
+      <Console name="Console" target="SYSTEM_OUT">
+        <PatternLayout pattern="%d{{ISO8601}} %p [%t] %c - %m%n"/>
+      </Console>
+    </Appenders>
+    <Loggers>
+      <Root level="info">
+        <AppenderRef ref="Console"/>
+      </Root>
+
+      <!-- Uncomment to enable logging of all HTTP requests
+      <Logger name="org.apache.druid.jetty.RequestLog" additivity="false" level="DEBUG">
+          <AppenderRef ref="Console"/>
+      </Logger>
+      -->
+    </Loggers>
+  </Configuration>
+  EOF
+
   # Load JVM configurations of each Druid service
   DRUID_SERVICES=(broker coordinator historical middleManager overlord router)
   for DRUID_SERVICE in ${{DRUID_SERVICES[@]}}; do

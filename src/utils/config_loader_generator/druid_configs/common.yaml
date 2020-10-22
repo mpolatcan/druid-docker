@@ -70,9 +70,9 @@ druid:
     logProperties: "false"
     maskProperties: "NULL"
   request.logging:
-    type: "NULL"
-    dir: "NULL"
-    filePattern: "NULL"
+    type: "file"
+    dir: "=${DRUID_LOG_DIR}"
+    filePattern: "\"yyyy-MM-dd'.log'\""
     feed: "NULL"
     setMDC: "false"
     setContextMDC: "False"
