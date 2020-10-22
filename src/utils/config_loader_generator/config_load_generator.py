@@ -11,7 +11,7 @@ class Constants:
     KEY_OUTPUT_DIR = "output_dir"
     KEY_PATH = "path"
     KEY_FILENAME = "filename"
-    CONFIG_LOADER_STD_STATEMENT_FMT = "load_config \"{property}\" ${{{env_var_name}:={env_var_value}}} \"{config_filename}\""
+    CONFIG_LOADER_STD_STATEMENT_FMT = "load_config \"{property}\" \"${{{env_var_name}:={env_var_value}}}\" \"{config_filename}\""
     CONFIG_LOADER_SUBST_STATEMENT_FMT = "load_config \"{property}\" \"{substitution}\" \"{config_filename}\""
     CONFIG_LOADER_OPT_SUBST_STATEMENT_FMT = "load_config_with_opt \"{property}\" \"{check}\" \"{substitution_not_null}\" \"{substitution_null}\" \"{config_filename}\""
 

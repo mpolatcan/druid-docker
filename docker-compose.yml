@@ -86,6 +86,22 @@ services:
       DRUID_METADATA_STORAGE_CONNECTOR_PASSWORD: "postgres"
       DRUID_EXTENSIONS_DIRECTORY: "/home/druid/druid/extensions"
 
+  druid-overlord:
+    image: mpolatcan/druid:0.20.0-java8
+    container_name: druid-overlord
+    hostname: druid-overlord
+    environment:
+      DRUID_SERVICES: |
+        overlord
+      DRUID_ZK_SERVICE_HOST: "zookeeper"
+      BROKER_JVM_HEAP_SIZE: "512m"
+      DRUID_EXTENSIONS_LOADLIST: "[\"postgresql-metadata-storage\"]"
+      DRUID_METADATA_STORAGE_TYPE: "postgresql"
+      DRUID_METADATA_STORAGE_CONNECTOR_CONNECTURI: "jdbc:postgresql://postgres:5432/druid"
+      DRUID_METADATA_STORAGE_CONNECTOR_USER: "postgres"
+      DRUID_METADATA_STORAGE_CONNECTOR_PASSWORD: "postgres"
+      DRUID_EXTENSIONS_DIRECTORY: "/home/druid/druid/extensions"
+
   druid-historical:
     image: mpolatcan/druid:0.20.0-java8
     container_name: druid-historical

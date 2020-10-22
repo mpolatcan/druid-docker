@@ -16,7 +16,7 @@ config_loader_sh_template: |
   }}
 
   # Create configuration directories
-  mkdir -p ${{DRUID_CONF_DIR}}/{{_common,broker,coordinator,historical,middlemanager,overlord,router}}
+  mkdir -p ${{DRUID_CONF_DIR}}/{{_common,broker,coordinator,historical,middleManager,overlord,router}}
 
   # Copy default log4j2.xml configuration to _common/log4j2.xml
   cat <<EOF > ${{DRUID_CONF_DIR}}/_common/log4j2.xml
@@ -77,7 +77,7 @@ config_files:
   - path: druid_configs/historical.yaml
     filename: historical/runtime.properties
   - path: druid_configs/middlemanager.yaml
-    filename: middlemanager/runtime.properties
+    filename: middleManager/runtime.properties
   - path: druid_configs/overlord.yaml
     filename: overlord/runtime.properties
 output_dir: ../../base
