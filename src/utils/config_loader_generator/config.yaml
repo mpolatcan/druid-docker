@@ -80,4 +80,6 @@ config_files:
     filename: middleManager/runtime.properties
   - path: druid_configs/overlord.yaml
     filename: overlord/runtime.properties
+  - path: druid_configs/router.yaml
+    filename: router/runtime.properties
 output_dir: ../../base
