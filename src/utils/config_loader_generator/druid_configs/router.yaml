@@ -7,7 +7,7 @@ druid:
   router:
     defaultBrokerServiceName: "druid/broker"
     tierToBrokerMap: "{\\\"_default_tier\\\":\\\"\\\"\\}"
-    defaultRule: "\\\"_default\\\""
+    defaultRule: "_default"
     pollPeriod: "PT1M"
     strategies: "[{\\\"type\\\":\\\"timeBoundary\\\"\\},{\\\"type\\\":\\\"priority\\\"\\}]"
     avatica.balancer.type: "rendezvousHash"
