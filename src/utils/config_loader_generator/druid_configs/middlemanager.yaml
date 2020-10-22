@@ -6,7 +6,7 @@ druid:
   service: "druid/middlemanager"
   indexer:
     runner:
-      allowedPrefixes: "\"com.metamx\", \"druid\", \"org.apache.druid\", \"user.timezone\", \"file.encoding\", \"java.io.tmpdir\", \"hadoop\""
+      allowedPrefixes: "\\\"com.metamx\\\",\\\"druid\\\",\\\"org.apache.druid\\\",\\\"user.timezone\\\",\\\"file.encoding\\\",\\\"java.io.tmpdir\\\",\\\"hadoop\\\""
       compressZnodes: "true"
       classpath: "NULL"
       javaCommand: "java"
@@ -18,7 +18,7 @@ druid:
     task:
       baseDir: "NULL"
       baseTaskDir: "NULL"
-      defaultHadoopCoordinates: "[\"org.apache.hadoop:hadoop-client:2.8.5\"]"
+      defaultHadoopCoordinates: "[\\\"org.apache.hadoop:hadoop-client:2.8.5\\\"]"
       defaultRowFlushBoundary: "75000"
       directoryLockTimeout: "PT10M"
       gracefulShutdownTimeout: "PT5M"
