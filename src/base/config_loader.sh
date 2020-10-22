@@ -245,7 +245,7 @@ load_config "druid.query.groupBy.numParallelCombineThreads" ${DRUID_QUERY_GROUPB
 load_config "druid.query.groupBy.maxIntermediateRows" ${DRUID_QUERY_GROUPBY_MAXINTERMEDIATEROWS:=50000} "_common/common.runtime.properties"
 load_config "druid.query.groupBy.maxResults" ${DRUID_QUERY_GROUPBY_MAXRESULTS:=500000} "_common/common.runtime.properties"
 # ===========================================================================
-load_config_with_opt "druid.host" "${DRUID_BROKER_HOSTNAME}" "${DRUID_BROKER_HOSTNAME}" "${HOSTNAME}" "broker/runtime.properties"
+load_config_with_opt "druid.host" "${DRUID_BROKER_HOSTNAME:=NULL}" "${DRUID_BROKER_HOSTNAME:=NULL}" "${HOSTNAME}" "broker/runtime.properties"
 load_config "druid.bindOnHost" ${DRUID_BINDONHOST:=false} "broker/runtime.properties"
 load_config "druid.plaintextPort" ${DRUID_PLAINTEXTPORT:=8082} "broker/runtime.properties"
 load_config "druid.tlsPort" ${DRUID_TLSPORT:=8282} "broker/runtime.properties"
@@ -319,7 +319,7 @@ load_config "druid.sql.planner.sqlTimeZone" ${DRUID_SQL_PLANNER_SQLTIMEZONE:=UTC
 load_config "druid.sql.planner.metadataSegmentCacheEnable" ${DRUID_SQL_PLANNER_METADATASEGMENTCACHEENABLE:=false} "broker/runtime.properties"
 load_config "druid.sql.planner.metadataSegmentPollPeriod" ${DRUID_SQL_PLANNER_METADATASEGMENTPOLLPERIOD:=60000} "broker/runtime.properties"
 # ===========================================================================
-load_config_with_opt "druid.host" "${DRUID_COORDINATOR_HOSTNAME}" "${DRUID_COORDINATOR_HOSTNAME}" "${HOSTNAME}" "coordinator/runtime.properties"
+load_config_with_opt "druid.host" "${DRUID_COORDINATOR_HOSTNAME:=NULL}" "${DRUID_COORDINATOR_HOSTNAME:=NULL}" "${HOSTNAME}" "coordinator/runtime.properties"
 load_config "druid.bindOnHost" ${DRUID_BINDONHOST:=false} "coordinator/runtime.properties"
 load_config "druid.plaintextPort" ${DRUID_PLAINTEXTPORT:=8081} "coordinator/runtime.properties"
 load_config "druid.tlsPort" ${DRUID_TLSPORT:=8281} "coordinator/runtime.properties"
@@ -354,7 +354,7 @@ load_config "druid.manager.lookups.updateAllTimeout" ${DRUID_MANAGER_LOOKUPS_UPD
 load_config "druid.manager.lookups.threadPoolSize" ${DRUID_MANAGER_LOOKUPS_THREADPOOLSIZE:=10} "coordinator/runtime.properties"
 load_config "druid.manager.lookups.period" ${DRUID_MANAGER_LOOKUPS_PERIOD:=NULL} "coordinator/runtime.properties"
 # ===========================================================================
-load_config_with_opt "druid.host" "${DRUID_HISTORICAL_HOSTNAME}" "${DRUID_HISTORICAL_HOSTNAME}" "${HOSTNAME}" "historical/runtime.properties"
+load_config_with_opt "druid.host" "${DRUID_HISTORICAL_HOSTNAME:=NULL}" "${DRUID_HISTORICAL_HOSTNAME:=NULL}" "${HOSTNAME}" "historical/runtime.properties"
 load_config "druid.bindOnHost" ${DRUID_BINDONHOST:=false} "historical/runtime.properties"
 load_config "druid.plaintextPort" ${DRUID_PLAINTEXTPORT:=8083} "historical/runtime.properties"
 load_config "druid.tlsPort" ${DRUID_TLSPORT:=8283} "historical/runtime.properties"
@@ -371,7 +371,7 @@ load_config "druid.server.http.gracefulShutdownTimeout" ${DRUID_SERVER_HTTP_GRAC
 load_config "druid.server.http.unannouncePropagationDelay" ${DRUID_SERVER_HTTP_UNANNOUNCEPROPAGATIONDELAY:=PT0S} "historical/runtime.properties"
 load_config "druid.server.http.maxQueryTimeout" ${DRUID_SERVER_HTTP_MAXQUERYTIMEOUT:=NULL} "historical/runtime.properties"
 load_config "druid.server.http.maxRequestHeaderSize" ${DRUID_SERVER_HTTP_MAXREQUESTHEADERSIZE:=NULL} "historical/runtime.properties"
-load_config "druid.segmentCache.locations" ${DRUID_SEGMENTCACHE_LOCATIONS:=NULL} "historical/runtime.properties"
+load_config "druid.segmentCache.locations" ${DRUID_SEGMENTCACHE_LOCATIONS:='[{"path":"/mnt/druidSegments","maxSize":"10k","freeSpacePercent": 1.0}]'} "historical/runtime.properties"
 load_config "druid.segmentCache.locationSelectorStragey" ${DRUID_SEGMENTCACHE_LOCATIONSELECTORSTRAGEY:=leastBytesUsed} "historical/runtime.properties"
 load_config "druid.segmentCache.deleteOnRemove" ${DRUID_SEGMENTCACHE_DELETEONREMOVE:=true} "historical/runtime.properties"
 load_config "druid.segmentCache.dropSegmentDelayMillis" ${DRUID_SEGMENTCACHE_DROPSEGMENTDELAYMILLIS:=30000} "historical/runtime.properties"
@@ -394,7 +394,7 @@ load_config "druid.historical.cache.populateCache" ${DRUID_HISTORICAL_CACHE_POPU
 load_config "druid.historical.cache.unCacheable" ${DRUID_HISTORICAL_CACHE_UNCACHEABLE:=[]} "historical/runtime.properties"
 load_config "druid.historical.cache.maxEntrySize" ${DRUID_HISTORICAL_CACHE_MAXENTRYSIZE:=NULL} "historical/runtime.properties"
 # ===========================================================================
-load_config_with_opt "druid.host" "${DRUID_MIDDLEMANAGER_HOSTNAME}" "${DRUID_MIDDLEMANAGER_HOSTNAME}" "${HOSTNAME}" "middlemanager/runtime.properties"
+load_config_with_opt "druid.host" "${DRUID_MIDDLEMANAGER_HOSTNAME:=NULL}" "${DRUID_MIDDLEMANAGER_HOSTNAME:=NULL}" "${HOSTNAME}" "middlemanager/runtime.properties"
 load_config "druid.bindOnHost" ${DRUID_BINDONHOST:=false} "middlemanager/runtime.properties"
 load_config "druid.plaintextPort" ${DRUID_PLAINTEXTPORT:=8091} "middlemanager/runtime.properties"
 load_config "druid.tlsPort" ${DRUID_TLSPORT:=8291} "middlemanager/runtime.properties"
@@ -439,7 +439,7 @@ load_config "druid.peon.taskActionClient.retry.maxWait" ${DRUID_PEON_TASKACTIONC
 load_config "druid.peon.taskActionClient.retry.maxRetryCount" ${DRUID_PEON_TASKACTIONCLIENT_RETRY_MAXRETRYCOUNT:=60} "middlemanager/runtime.properties"
 load_config "druid.peon.defaultSegmentWriteOutMediumFactory.type" ${DRUID_PEON_DEFAULTSEGMENTWRITEOUTMEDIUMFACTORY_TYPE:=tmpFile} "middlemanager/runtime.properties"
 # ===========================================================================
-load_config_with_opt "druid.host" "${DRUID_OVERLORD_HOSTNAME}" "${DRUID_OVERLORD_HOSTNAME}" "${HOSTNAME}" "overlord/runtime.properties"
+load_config_with_opt "druid.host" "${DRUID_OVERLORD_HOSTNAME:=NULL}" "${DRUID_OVERLORD_HOSTNAME:=NULL}" "${HOSTNAME}" "overlord/runtime.properties"
 load_config "druid.bindOnHost" ${DRUID_BINDONHOST:=false} "overlord/runtime.properties"
 load_config "druid.plaintextPort" ${DRUID_PLAINTEXTPORT:=8090} "overlord/runtime.properties"
 load_config "druid.tlsPort" ${DRUID_TLSPORT:=8290} "overlord/runtime.properties"

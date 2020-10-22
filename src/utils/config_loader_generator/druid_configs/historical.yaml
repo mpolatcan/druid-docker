@@ -1,5 +1,5 @@
 druid:
-  host: "?${DRUID_HISTORICAL_HOSTNAME},${DRUID_HISTORICAL_HOSTNAME},${HOSTNAME}"
+  host: "?${DRUID_HISTORICAL_HOSTNAME:=NULL},${DRUID_HISTORICAL_HOSTNAME:=NULL},${HOSTNAME}"
   bindOnHost: "false"
   plaintextPort: "8083"
   tlsPort: "8283"
@@ -19,7 +19,7 @@ druid:
       maxQueryTimeout: "NULL"
       maxRequestHeaderSize: "NULL"
   segmentCache:
-    locations: "NULL"
+    locations: "[{\"path\":\"/mnt/druidSegments\",\"maxSize\":\"10k\",\"freeSpacePercent\": 1.0}]"
     locationSelectorStragey: "leastBytesUsed"
     deleteOnRemove: "true"
     dropSegmentDelayMillis: "30000"

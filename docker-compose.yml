@@ -17,6 +17,7 @@ services:
     environment:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "druid"
     ports:
     - 5432:5432
 
@@ -30,7 +31,7 @@ services:
       DRUID_ZK_SERVICE_HOST: "zookeeper"
       DRUID_EXTENSIONS_LOADLIST: "[\"postgresql-metadata-storage\"]"
       DRUID_METADATA_STORAGE_TYPE: "postgresql"
-      DRUID_METADATA_STORAGE_CONNECTOR_CONNECTIONURI: "jdbc:postgresql://postgres:5432/druid"
+      DRUID_METADATA_STORAGE_CONNECTOR_CONNECTURI: "jdbc:postgresql://postgres:5432/druid"
       DRUID_METADATA_STORAGE_CONNECTOR_USER: "postgres"
       DRUID_METADATA_STORAGE_CONNECTOR_PASSWORD: "postgres"
       DRUID_EXTENSIONS_DIRECTORY: "/home/druid/druid/extensions"
@@ -48,7 +49,7 @@ services:
       COORDINATOR_JVM_HEAP_SIZE: "512m"
       DRUID_EXTENSIONS_LOADLIST: "[\"postgresql-metadata-storage\"]"
       DRUID_METADATA_STORAGE_TYPE: "postgresql"
-      DRUID_METADATA_STORAGE_CONNECTOR_CONNECTIONURI: "jdbc:postgresql://postgres:5432/druid"
+      DRUID_METADATA_STORAGE_CONNECTOR_CONNECTURI: "jdbc:postgresql://postgres:5432/druid"
       DRUID_METADATA_STORAGE_CONNECTOR_USER: "postgres"
       DRUID_METADATA_STORAGE_CONNECTOR_PASSWORD: "postgres"
       DRUID_EXTENSIONS_DIRECTORY: "/home/druid/druid/extensions"
@@ -59,12 +60,12 @@ services:
     hostname: druid-middlemanager
     environment:
       DRUID_SERVICES: |
-        middlemanager
+        middleManager
       DRUID_ZK_SERVICE_HOST: "zookeeper"
       MIDDLEMANAGER_JVM_HEAP_SIZE: "512m"
       DRUID_EXTENSIONS_LOADLIST: "[\"postgresql-metadata-storage\"]"
       DRUID_METADATA_STORAGE_TYPE: "postgresql"
-      DRUID_METADATA_STORAGE_CONNECTOR_CONNECTIONURI: "jdbc:postgresql://postgres:5432/druid"
+      DRUID_METADATA_STORAGE_CONNECTOR_CONNECTURI: "jdbc:postgresql://postgres:5432/druid"
       DRUID_METADATA_STORAGE_CONNECTOR_USER: "postgres"
       DRUID_METADATA_STORAGE_CONNECTOR_PASSWORD: "postgres"
       DRUID_EXTENSIONS_DIRECTORY: "/home/druid/druid/extensions"
@@ -80,7 +81,7 @@ services:
       BROKER_JVM_HEAP_SIZE: "512m"
       DRUID_EXTENSIONS_LOADLIST: "[\"postgresql-metadata-storage\"]"
       DRUID_METADATA_STORAGE_TYPE: "postgresql"
-      DRUID_METADATA_STORAGE_CONNECTOR_CONNECTIONURI: "jdbc:postgresql://postgres:5432/druid"
+      DRUID_METADATA_STORAGE_CONNECTOR_CONNECTURI: "jdbc:postgresql://postgres:5432/druid"
       DRUID_METADATA_STORAGE_CONNECTOR_USER: "postgres"
       DRUID_METADATA_STORAGE_CONNECTOR_PASSWORD: "postgres"
       DRUID_EXTENSIONS_DIRECTORY: "/home/druid/druid/extensions"
@@ -96,7 +97,7 @@ services:
       HISTORICAL_JVM_HEAP_SIZE: "512m"
       DRUID_EXTENSIONS_LOADLIST: "[\"postgresql-metadata-storage\"]"
       DRUID_METADATA_STORAGE_TYPE: "postgresql"
-      DRUID_METADATA_STORAGE_CONNECTOR_CONNECTIONURI: "jdbc:postgresql://postgres:5432/druid"
+      DRUID_METADATA_STORAGE_CONNECTOR_CONNECTURI: "jdbc:postgresql://postgres:5432/druid"
       DRUID_METADATA_STORAGE_CONNECTOR_USER: "postgres"
       DRUID_METADATA_STORAGE_CONNECTOR_PASSWORD: "postgres"
       DRUID_EXTENSIONS_DIRECTORY: "/home/druid/druid/extensions"
