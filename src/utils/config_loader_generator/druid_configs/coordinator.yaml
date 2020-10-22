@@ -3,7 +3,7 @@ druid:
   bindOnHost: "=${DRUID_COORDINATOR_BINDONHOST:=false}"
   plaintextPort: "=${DRUID_COORDINATOR_PLAINTEXT_PORT:=8081}"
   tlsPort: "=${DRUID_COORDINATOR_TLS_PORT:=8281}"
-  service: "=druid/coordinator"
+  service: "=${DRUID_COORDINATOR_SERVICE:=druid/coordinator}"
   coordinator:
     period:
       "": "PT60S"

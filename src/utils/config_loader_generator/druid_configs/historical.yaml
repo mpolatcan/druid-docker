@@ -3,7 +3,7 @@ druid:
   bindOnHost: "=${DRUID_HISTORICAL_BINDONHOST:=false}"
   plaintextPort: "=${DRUID_HISTORICAL_PLAINTEXT_PORT:=8083}"
   tlsPort: "=${DRUID_HISTORICAL_TLS_PORT:=8283}"
-  service: "=druid/historical"
+  service: "=${DRUID_HISTORICAL_SERVICE:=druid/historical}"
   server:
     maxSize: "NULL"
     tier: "_default_tier"

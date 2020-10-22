@@ -3,7 +3,7 @@ druid:
   bindOnHost: "=${DRUID_BROKER_BINDONHOST:=false}"
   plaintextPort: "=${DRUID_BROKER_PLAINTEXT_PORT:=8082}"
   tlsPort: "=${DRUID_BROKER_TLS_PORT:=8282}"
-  service: "=druid/broker"
+  service: "=${DRUID_BROKER_SERVICE:=druid/broker}"
   broker:
     balancery.type: "random"
     select.tier:

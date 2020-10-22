@@ -3,7 +3,7 @@ druid:
   bindOnHost: "=${DRUID_MIDDLEMANAGER_BINDONHOST:=false}"
   plaintextPort: "=${DRUID_MIDDLEMANAGER_PLAINTEXT_PORT:=8091}"
   tlsPort: "=${DRUID_MIDDLEMANAGER_TLS_PORT:=8291}"
-  service: "=druid/middlemanager"
+  service: "=${DRUID_MIDDLEMANAGER_SERVICE:=druid/middlemanager}"
   indexer:
     runner:
       allowedPrefixes: "[\\\"com.metamx\\\",\\\"druid\\\",\\\"org.apache.druid\\\",\\\"user.timezone\\\",\\\"file.encoding\\\",\\\"java.io.tmpdir\\\",\\\"hadoop\\\"]"

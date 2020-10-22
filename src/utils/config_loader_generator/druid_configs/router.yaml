@@ -3,11 +3,11 @@ druid:
   bindOnHost: "=${DRUID_ROUTER_BINDONHOST:=false}"
   plaintextPort: "=${DRUID_ROUTER_PLAINTEXT_PORT:=8888}"
   tlsPort: "=${DRUID_ROUTER_TLS_PORT:=9088}"
-  service: "=druid/router"
+  service: "=${DRUID_BROKER_SERVICE:=druid/router}"
   router:
     defaultBrokerServiceName: "druid/broker"
     coordinatorServiceName: "druid/coordinator"
-    tierToBrokerMap: "{\\\"_default_tier\\\":\\\"\\\"\\}"
+    tierToBrokerMap: "{\\\"_default_tier\\\":\\\"druid/broker\\\"\\}"
     defaultRule: "_default"
     pollPeriod: "PT1M"
     strategies: "[{\\\"type\\\":\\\"timeBoundary\\\"\\},{\\\"type\\\":\\\"priority\\\"\\}]"

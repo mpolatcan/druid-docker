@@ -3,7 +3,7 @@ druid:
   bindOnHost: "=${DRUID_OVERLORD_BINDONHOST:=false}"
   plaintextPort: "=${DRUID_OVERLORD_PLAINTEXT_PORT:=8090}"
   tlsPort: "=${DRUID_OVERLORD_TLS_PORT:=8290}"
-  service: "=druid/overlord"
+  service: "=${DRUID_OVERLORD_SERVICE:=druid/overlord}"
   indexer:
     runner.type: "local"
     storage:
